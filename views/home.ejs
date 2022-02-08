@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjetoTeste</title>
+</head>
+<body>
+
+    <h2>site</h2>
+    
+    <form action="post" method="POST">
+        <input type="text" name="nome" id="nomeUsuario" placeholder="nome...">
+        <input type="email" name="email" id="emailUsuario" placeholder="email...">
+        <input type="password" name="senha" id="senhaUsuario" placeholder="senha...">
+        <input type="submit" name="enviar" value="cadastar">
+    </form>
+
+    <ul>
+        <% informacao.forEach(function(user){ %>
+            <li><%= user.nome %></li>
+            <li><%= user.email %></li>
+            <li><%= user.senha %></li>
+            <hr>
+            <% }) %>
+    </ul>
+
+</body>
+</html>
