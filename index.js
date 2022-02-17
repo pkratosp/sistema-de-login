@@ -47,16 +47,27 @@ databaseProjeto.connect((err)=>{
     }
 })
 
+//variaves de confg
+var nomeEmpresa = 'Portal de noticias'
+var incluePath = 'http://localhost:3000/'
+
 app.get('/', function(req,res){
     let sql = "SELECT * FROM `tb_clientes.teste`";
     let query = databaseProjeto.query(sql, function(err,results){
-        res.render('home', {informacao:results});
+        res.render('home', {
+            informacao:results,
+            nomeSite:nomeEmpresa,
+            includePathSite:incluePath
+        });
     });
 });
 
 //pagina do login
 app.get('/login',(req,res)=>{
-    res.render('login',{})
+    res.render('login',{
+        nomeSite:nomeEmpresa,
+        includePathSite:incluePath
+    })
 })
 
 var login;
