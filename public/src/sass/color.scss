@@ -1,0 +1,22 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+//$cor-de-fundo: #1A1A1D;
+$cor-de-fundo: #121212;
+$cor-da-box-form: #4E4E50;
+$cor-input: #F1F1F1;
+$cor-branca-padrao:#F1F1F1;
+$cor-submit:#C3073F;
+$cor-box-alert-sucess: #AFD275;
+$cor-box-alert-error: #e45757;
+$cor-menu: rgba(0, 0, 0, 0.616);
+
+@mixin container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2%;
+}

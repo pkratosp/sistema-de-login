@@ -84,7 +84,9 @@ app.post('/login',(req,res)=>{
 
             if(session.login){
                 app.get('/cliente',(reque,cliente)=>{
-                    cliente.render('cliente/home',{})
+                    cliente.render('cliente/home',{
+                        includePathSite:incluePath
+                    })
                 })
             }
 
@@ -98,6 +100,8 @@ app.post('/login',(req,res)=>{
                 req.session.nome = resultados[0]['nome']
                 console.log('tudo certo '+req.session.nome)
                 res.redirect('/cliente')
+            }else{
+                console.log('Você não tem acesso ao serviço!')
             }
 
         }else if(resultados && resultados.length == 0){
@@ -112,11 +116,14 @@ app.post('/login',(req,res)=>{
 })
 
 //pagina de teste
-app.get('/teste',(req,res)=>{
-    res.render('teste',{})
+app.get('/cadastrar',(req,res)=>{
+    let nomePaginaSite = 'Cadastro'
+    res.render('cadastrar',{
+        nomeSite: nomePaginaSite
+    })
 })
 
-app.post('/teste',(req,res)=>{
+app.post('/cadastrar',(req,res)=>{
     let nome = req.body.nome
     let email = req.body.email
     let senha = req.body.senha
@@ -127,5 +134,5 @@ app.post('/teste',(req,res)=>{
         }
     })
     console.log('cadastrado pela pagina de teste')
-    res.render('teste',{})
+    res.render('cadastrar',{})
 })
