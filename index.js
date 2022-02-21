@@ -4,15 +4,19 @@ var MD5 = function(d){var r = M(V(Y(X(d),8*d.length)));return r.toLowerCase()};f
 var value = 'palavra-chave'
 var resultMD5 = MD5(value)
 
-
+//importaçoes necessarias
 const express = require('express')
 const expressSessao = require('express-session')
 const path = require('path')
 const bodyParser = require('body-parser')
 const mysql = require('mysql')
 const session = require('express-session')
-const { render } = require('express/lib/response')
+const { render, cookie } = require('express/lib/response')
+const req = require('express/lib/request')
+const cookieParser = require('cookie-parser')
+//const cookieSession = require('cookie-session')
 
+//para funcionar os arquivos ejs, definir o express-session e fazer pegar o bodyParser
 var app = express()
 app.use(session({secret:resultMD5}))
 app.set('view engine', 'ejs')
@@ -20,18 +24,18 @@ app.set('views',path.join(__dirname,'views'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname,'public')))
-
-
-//inicia o servidor
-app.listen(3000, ()=>{
-    console.log('Iniciando o servidor na porta 3000')
-})
+app.use(cookieParser())
 
 //constantes do mysql
 const localhost = 'localhost'
 const senha = ''
 const usuario = 'root'
 const databaseMain = 'new_music'
+
+//inicia o servidor
+app.listen(3000, ()=>{
+    console.log('Iniciando o servidor na porta 3000')
+})
 
 //conecta no mysql
 const databaseProjeto = mysql.createConnection({
@@ -51,6 +55,7 @@ databaseProjeto.connect((err)=>{
 var nomeEmpresa = 'Portal de noticias'
 var incluePath = 'http://localhost:3000/'
 
+
 app.get('/', function(req,res){
     let sql = "SELECT * FROM `tb_clientes.teste`";
     let query = databaseProjeto.query(sql, function(err,results){
@@ -62,12 +67,21 @@ app.get('/', function(req,res){
     });
 });
 
+app.get('/estilo.css',(req,res)=>{
+    //para carregar o arquivo de estilo
+    res.sendFile(__dirname+'/public/src/css/style.css')
+})
+
 //pagina do login
 app.get('/login',(req,res)=>{
-    res.render('login',{
-        nomeSite:nomeEmpresa,
-        includePathSite:incluePath
-    })
+    if(login != true){
+        res.render('login',{
+            nomeSite:nomeEmpresa,
+            includePathSite:incluePath
+        })
+    }else{
+        res.redirect('/cliente')
+    }
 })
 
 var login;
@@ -80,9 +94,9 @@ app.post('/login',(req,res)=>{
         if(err){
             console.log(err)
         }else if(resultados && resultados.length == 1){
-            session.login = true
+            login = session.login = true
 
-            if(session.login){
+            if(login){
                 app.get('/cliente',(reque,cliente)=>{
                     cliente.render('cliente/home',{
                         includePathSite:incluePath
@@ -98,6 +112,8 @@ app.post('/login',(req,res)=>{
                 login = req.session.login = true
                 req.session.email = emailLogin
                 req.session.nome = resultados[0]['nome']
+                let nomeAA = req.cookies.NomeCliente = 'Algusto'
+                console.log(nomeAA)
                 console.log('tudo certo '+req.session.nome)
                 res.redirect('/cliente')
             }else{
@@ -109,13 +125,10 @@ app.post('/login',(req,res)=>{
             res.redirect('/')
         }
     })
- 
-
-
 
 })
 
-//pagina de teste
+//pagina de cadastro
 app.get('/cadastrar',(req,res)=>{
     let nomePaginaSite = 'Cadastro'
     res.render('cadastrar',{
