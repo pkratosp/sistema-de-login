@@ -113,9 +113,6 @@ app.post('/login',(req,res)=>{
                 var emailLogado = req.session.email = emailLogin
                 var senhaLogado = req.session.senha = senhaLogin
                 var nomeLogado = req.session.nome = resultados[0]['nome']
-            //    response.cookie('email',emailLogado,{maxAge:24*60*60*1000,httpOnly:true})
-              //  response.cookie('senha',senhaLogado,{maxAge:24*60*60*1000,httpOnly:true})
-               // console.log(request.cookies.email)
                 console.log('tudo certo '+req.session.nome)
                 res.redirect('/cliente')
             }else{
